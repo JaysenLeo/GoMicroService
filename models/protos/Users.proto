@@ -1,0 +1,10 @@
+syntax = "proto3";
+package Models;
+option go_package = "./;Models";
+
+message UserModel {
+  // @inject_tag: json:"uid"
+  int32 UserID = 1;
+  // @inject_tag: json:"name"
+  string Name = 2;
+}

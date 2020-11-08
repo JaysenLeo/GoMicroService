@@ -1,0 +1,16 @@
+syntax = "proto3";
+package Models;
+option go_package = "./;Models";
+import "Users.proto";
+
+message UsersRequest {
+  int32 size = 1;
+}
+
+message UserListResponse {
+  repeated UserModel data=1;
+}
+
+service UserListService {
+  rpc GetUserList(UsersRequest) returns (UserListResponse);
+}
