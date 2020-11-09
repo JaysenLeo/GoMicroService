@@ -8,8 +8,9 @@ import (
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/etcd"
+	"github.com/micro/go-micro/v2/web"
 	Models "go-micro-service/models"
-	"log"
+	wepApp "go-micro-service/web"
 )
 
 type LogWrapper struct {
@@ -36,13 +37,18 @@ func main() {
 		micro.WrapClient(NewLogWrapper),
 	)
 	userServiceClient := Models.NewUserListService("user.server", server.Client())
-
-	resp, e := userServiceClient.GetUserList(context.Background(), &Models.UsersRequest{Size: 5})
-	if e != nil {
-		log.Fatal(e)
-	}
-	fmt.Println(resp)
-	for r := range resp.Data {
-		fmt.Println(resp.Data[r].UserID, resp.Data[r].Name)
-	}
+	//
+	//resp, e := userServiceClient.GetUserList(context.Background(), &Models.UsersRequest{Size: 5})
+	httpServer := web.NewService(
+		web.Name("http.server"),
+		web.Address("127.0.0.1:9000"),
+		web.Handler(wepApp.NewRouter(userServiceClient)))
+	httpServer.Run()
+	//if e != nil {
+	//	log.Fatal(e)
+	//}
+	//fmt.Println(resp)
+	//for r := range resp.Data {
+	//	fmt.Println(resp.Data[r].UserID, resp.Data[r].Name)
+	//}
 }
