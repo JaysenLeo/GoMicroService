@@ -16,7 +16,7 @@ func main() {
 		micro.Name("user.server"),
 		micro.Registry(reg),
 	)
-	server.Init()
 	Models.RegisterUserListServiceHandler(server.Server(), new(service.UserService))
+	server.Init()
 	server.Run()
 }
