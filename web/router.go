@@ -7,9 +7,10 @@ import (
 	"go-micro-service/web/middlewares"
 )
 
-func NewRouter(userListService Models.UserListService) *gin.Engine {
+func NewRouter(userListService Models.UserCommonService) *gin.Engine {
 	ginRouter := gin.Default()
 	ginRouter.Use(middlewares.UserMiddleware(userListService))
 	ginRouter.Handle("GET", "/users/:size", handlers.GetUsersHandler)
+	ginRouter.Handle("GET", "/user/:userId", handlers.GetUserDetailHandler)
 	return ginRouter
 }

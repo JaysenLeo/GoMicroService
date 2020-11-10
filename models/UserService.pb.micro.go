@@ -33,32 +33,33 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Api Endpoints for UserListService service
+// Api Endpoints for UserCommonService service
 
-func NewUserListServiceEndpoints() []*api.Endpoint {
+func NewUserCommonServiceEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{}
 }
 
-// Client API for UserListService service
+// Client API for UserCommonService service
 
-type UserListService interface {
+type UserCommonService interface {
 	GetUserList(ctx context.Context, in *UsersRequest, opts ...client.CallOption) (*UserListResponse, error)
+	GetUserDetail(ctx context.Context, in *UsersRequest, opts ...client.CallOption) (*UserDetailResponse, error)
 }
 
-type userListService struct {
+type userCommonService struct {
 	c    client.Client
 	name string
 }
 
-func NewUserListService(name string, c client.Client) UserListService {
-	return &userListService{
+func NewUserCommonService(name string, c client.Client) UserCommonService {
+	return &userCommonService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *userListService) GetUserList(ctx context.Context, in *UsersRequest, opts ...client.CallOption) (*UserListResponse, error) {
-	req := c.c.NewRequest(c.name, "UserListService.GetUserList", in)
+func (c *userCommonService) GetUserList(ctx context.Context, in *UsersRequest, opts ...client.CallOption) (*UserListResponse, error) {
+	req := c.c.NewRequest(c.name, "UserCommonService.GetUserList", in)
 	out := new(UserListResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -67,27 +68,43 @@ func (c *userListService) GetUserList(ctx context.Context, in *UsersRequest, opt
 	return out, nil
 }
 
-// Server API for UserListService service
+func (c *userCommonService) GetUserDetail(ctx context.Context, in *UsersRequest, opts ...client.CallOption) (*UserDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "UserCommonService.GetUserDetail", in)
+	out := new(UserDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-type UserListServiceHandler interface {
+// Server API for UserCommonService service
+
+type UserCommonServiceHandler interface {
 	GetUserList(context.Context, *UsersRequest, *UserListResponse) error
+	GetUserDetail(context.Context, *UsersRequest, *UserDetailResponse) error
 }
 
-func RegisterUserListServiceHandler(s server.Server, hdlr UserListServiceHandler, opts ...server.HandlerOption) error {
-	type userListService interface {
+func RegisterUserCommonServiceHandler(s server.Server, hdlr UserCommonServiceHandler, opts ...server.HandlerOption) error {
+	type userCommonService interface {
 		GetUserList(ctx context.Context, in *UsersRequest, out *UserListResponse) error
+		GetUserDetail(ctx context.Context, in *UsersRequest, out *UserDetailResponse) error
 	}
-	type UserListService struct {
-		userListService
+	type UserCommonService struct {
+		userCommonService
 	}
-	h := &userListServiceHandler{hdlr}
-	return s.Handle(s.NewHandler(&UserListService{h}, opts...))
+	h := &userCommonServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&UserCommonService{h}, opts...))
 }
 
-type userListServiceHandler struct {
-	UserListServiceHandler
+type userCommonServiceHandler struct {
+	UserCommonServiceHandler
 }
 
-func (h *userListServiceHandler) GetUserList(ctx context.Context, in *UsersRequest, out *UserListResponse) error {
-	return h.UserListServiceHandler.GetUserList(ctx, in, out)
+func (h *userCommonServiceHandler) GetUserList(ctx context.Context, in *UsersRequest, out *UserListResponse) error {
+	return h.UserCommonServiceHandler.GetUserList(ctx, in, out)
+}
+
+func (h *userCommonServiceHandler) GetUserDetail(ctx context.Context, in *UsersRequest, out *UserDetailResponse) error {
+	return h.UserCommonServiceHandler.GetUserDetail(ctx, in, out)
 }

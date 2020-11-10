@@ -36,19 +36,12 @@ func main() {
 		)),
 		micro.WrapClient(NewLogWrapper),
 	)
-	userServiceClient := Models.NewUserListService("user.server", server.Client())
-	//
-	//resp, e := userServiceClient.GetUserList(context.Background(), &Models.UsersRequest{Size: 5})
+	userServiceClient := Models.NewUserCommonService("user.server", server.Client())
+
 	httpServer := web.NewService(
 		web.Name("http.server"),
 		web.Address("127.0.0.1:9000"),
 		web.Handler(wepApp.NewRouter(userServiceClient)))
 	httpServer.Run()
-	//if e != nil {
-	//	log.Fatal(e)
-	//}
-	//fmt.Println(resp)
-	//for r := range resp.Data {
-	//	fmt.Println(resp.Data[r].UserID, resp.Data[r].Name)
-	//}
+
 }

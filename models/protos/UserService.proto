@@ -5,12 +5,23 @@ import "Users.proto";
 
 message UsersRequest {
   int32 size = 1;
+  // @inject_tag: uri:"uid" json:"uid"
+  int32 UserID = 2;
 }
 
 message UserListResponse {
   repeated UserModel data=1;
 }
 
-service UserListService {
+message UserDetailRequest {
+  int32 userId = 1;
+}
+
+message UserDetailResponse {
+   UserModel data=1;
+}
+
+service UserCommonService {
   rpc GetUserList(UsersRequest) returns (UserListResponse);
+  rpc GetUserDetail(UsersRequest) returns (UserDetailResponse);
 }
