@@ -5,7 +5,7 @@ import (
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/etcd"
 	Models "go-micro-service/models"
-	"go-micro-service/service"
+	server2 "go-micro-service/service/server"
 )
 
 func main() {
@@ -17,6 +17,6 @@ func main() {
 		micro.Registry(reg),
 	)
 	server.Init()
-	Models.RegisterUserListServiceHandler(server.Server(), new(service.UserService))
+	Models.RegisterUserListServiceHandler(server.Server(), new(server2.UserService))
 	server.Run()
 }

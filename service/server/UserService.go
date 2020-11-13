@@ -1,7 +1,8 @@
-package service
+package server
 
 import (
 	"context"
+	"github.com/micro/go-micro/v2/util/log"
 	"go-micro-service/models"
 	"strconv"
 )
@@ -22,6 +23,7 @@ func NewUserList(size int32) []*Models.UserModel {
 }
 
 func (*UserService) GetUserList(ctx context.Context, UserListReq *Models.UsersRequest, UserListResp *Models.UserListResponse) error {
+	log.Info("GetUserList")
 	UserListResp.Data = NewUserList(UserListReq.Size)
 	return nil
 }
