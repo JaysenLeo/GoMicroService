@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"go-micro-service/models"
 	"strconv"
+	"time"
 )
 
 type UserService struct {
@@ -31,11 +33,17 @@ func NewUserList(size int32) []*Models.UserModel {
 }
 
 func (*UserService) GetUserList(ctx context.Context, UserListReq *Models.UsersRequest, UserListResp *Models.UserListResponse) error {
+	fmt.Println("GetUserList")
+	// 模拟触发降级
+	time.Sleep(time.Second * 3)
 	UserListResp.Data = NewUserList(UserListReq.Size)
 	return nil
 }
 
 func (*UserService) GetUserDetail(ctx context.Context, UserDetailReq *Models.UsersRequest, UserDetailResp *Models.UserDetailResponse) error {
+	fmt.Println("GetUserDetail")
+	// 模拟触发降级
+	time.Sleep(time.Second * 3)
 	UserDetailResp.Data = NewUserDetail(UserDetailReq.UserID)
 	return nil
 }

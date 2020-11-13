@@ -5,7 +5,7 @@ import (
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/etcd"
 	Models "go-micro-service/models"
-	"go-micro-service/service"
+	"go-micro-service/service/server"
 )
 
 func main() {
